@@ -1,0 +1,123 @@
+This text file annotates the "Optimized Random Forest.py" file to easier understanding of the model and how it works.
+
+Python code outlines a thorough process for building and evaluating an optimized Random Forest Classifier model for predicting whether someone has diabetes or not
+based on a set of features provided in the dataset below. These features range from general health markers, behavioral factors, to socio-economic indicators.
+
+Here's a breakdown of my workflow:
+
+Data Fetching: I fetched the dataset using a custom function fetch_ucirepo().
+Data Preprocessing:
+Standardized the features using StandardScaler.
+Resampled the imbalanced dataset using SMOTE (Synthetic Minority Over-sampling Technique).
+Train-Test Split: Used 80% of the data for training and 20% for testing.
+Hyperparameter Tuning: Performed grid search with 3-fold cross-validation to find the best hyperparameters for the Random Forest model.
+Model Training & Evaluation:
+Trained the best model on the training data.
+Evaluated it on the test data using various metrics: accuracy, precision, recall, and F1 score.
+Feature Importance: Visualized the importance of each feature in making predictions.
+
+Here is a breakdown of my code:
+Importing Libraries: Necessary libraries and modules for data manipulation, machine learning, model interpretation, and visualization are imported.
+
+Data Preprocessing:
+
+preprocess_data: This function scales the features using StandardScaler to have zero mean and unit variance. After scaling, the function uses SMOTE to tackle class imbalance by oversampling the minority class. The resampled dataset is then returned.
+Training and Hyperparameter Tuning:
+
+train_and_tune: This function aims to find the best hyperparameters for the RandomForestClassifier using GridSearchCV. It optimizes based on recall, which means the primary goal is to capture as many actual positive cases (diabetes) as possible. The function returns the best model.
+Model Evaluation:
+
+evaluate_model: Given a classifier and test data, this function prints out performance metrics like accuracy, precision, recall, F1 score, and the confusion matrix.
+Model Interpretation with LIME:
+
+interpret_with_lime: This function uses LIME to provide a local interpretation of a randomly selected test instance. LIME helps to explain the model's prediction for that instance in an interpretable manner.
+Model Interpretation with SHAP:
+
+interpret_with_shap: This function uses SHAP to provide an interpretation for a randomly selected test instance. The SHAP values are computed for the test dataset, and then a force plot is generated for a single prediction. The force plot helps visualize how each feature is pushing the model's prediction either towards or away from the positive class (diabetes).
+Main Execution:
+
+Data is fetched using the fetch_ucirepo function.
+Data is preprocessed using the preprocess_data function.
+Data is split into training and test sets.
+A RandomForestClassifier is trained and hyperparameter-tuned using the train_and_tune function.
+The model's performance is evaluated using the evaluate_model function.
+A single test instance is interpreted using LIME with the interpret_with_lime function.
+A single test instance is interpreted using SHAP with the interpret_with_shap function.
+Feature importances of the RandomForest model are plotted.
+
+
+Evaluation Metrics:
+Accuracy: 90.11%
+Precision: 89.53%
+Recall: 90.79%
+F1 Score: 90.15%
+Confusion Matrix: True Positives = 39547, True Negatives = 39149, False Positives = 4624, False Negatives = 4014
+
+Plot 1:
+This is a the feature Importance graph, so it shows just how much each feature provided in the dataset contributes to a
+Diabetes diagnosis.
+
+Plot 2, 3,4:
+For all two plots below, a single sample subject is used and the graphs below visualize the thought process of the designed model in evaluating
+the subject as they relate to Diabetes.
+
+Plot 2:
+SHAP (SHapley Additive exPlanations) Plot (Decision Path Visualization):
+The function interpret_with_shap takes the best RandomForest model, the training data, and the test data as inputs.
+Using the SHAP TreeExplainer, SHAP values are computed for the test dataset.
+These values indicate the contribution of each feature towards the prediction for each instance in the test dataset.
+
+
+GenHlth <= -0.48: If an individual's general health is less than or equal to -0.48 standard deviations below the average, it leans towards a "No Diabetes" diagnosis.
+
+Age <= -0.34: If the age of the individual is less than or equal to -0.34 standard deviations below the average, it suggests a "No Diabetes" outcome.
+
+0.09 < BMI <= 0.70: Individuals with a BMI value that falls between these two standardized values lean more towards a "Diabetes" diagnosis. This might imply that those with a near-average BMI (around 0.09 SDs above mean) to a slightly higher BMI (up to 0.70 SDs above mean) are at a greater risk.
+
+HvyAlcoholConsump: It's hard to determine the exact boundaries from the image, but if heavy alcohol consumption is within a certain range, it indicates a "Diabetes" risk.
+
+HighBP <= -0.87: If someone's high blood pressure rating is less than or equal to -0.87 standard deviations below the average, it indicates a "No Diabetes" outcome. This suggests that lower blood pressure is a protective factor against diabetes.
+
+Education: It's a bit truncated in the image, but if an individual's education falls within a certain range, it influences the diabetes outcome. Remember, education can indirectly affect health outcomes through factors like health literacy, health behaviors, and access to resources.
+
+-0.03 < Income <= 0.94: If an individual's income falls within this range, it leans towards a "Diabetes" outcome. Income can also indirectly impact health through access to healthcare, diet, living conditions, and stress levels.
+
+HighChol <= -0.86: A cholesterol level less than or equal to -0.86 standard deviations below the average suggests a "No Diabetes" outcome.
+
+-0.89 < Sex <= 1.13: If the 'Sex' feature falls within this range, it points towards a "Diabetes" outcome. Again, how 'sex' is coded matters, and this could reflect biological differences or other gender-related factors.
+
+NoDocbcCost <= -0.30: If an individual is less likely or slightly less likely to avoid seeing a doctor due to cost (up to -0.30 standard deviations below the average), it points towards a "No Diabetes" diagnosis.
+
+
+
+Plot 3:
+A force plot is then generated for a single, randomly chosen test instance.
+This plot visualizes the contributions of each feature to the model's prediction for that particular instance (sample subject).
+Positive SHAP values push the prediction towards the positive class (diabetes), while negative SHAP values push the prediction towards the negative class (no diabetes).
+The plot enables you to understand which features are most influential in making that particular prediction.
+
+GenHlth (-1.41): This indicates that the individual's general health is 1.41 standard deviations below the average of the dataset. This suggests poorer than average health.
+
+Age (-0.34): The individual's age is 0.34 standard deviations below the average. This indicates that they are younger than the average participant in the dataset.
+
+BMI (0.70): The Body Mass Index (BMI) is 0.70 standard deviations above the average. A higher BMI can be indicative of overweight or obesity, but it's essential to note that BMI doesn't distinguish between weight from fat and weight from muscle.
+
+HvyAlcoholConsump (-0.24): This individual's heavy alcohol consumption is 0.24 standard deviations below the average. They consume less alcohol than the mean participant.
+
+HighBP (-0.87): The individual's high blood pressure (often a risk factor for various diseases) is 0.87 standard deviations below the average, suggesting they have a lower risk compared to the average participant.
+
+Education (0.96): Their education level is 0.96 standard deviations above the average. This means they have a higher level of education than the mean participant. Given your background in Health Sciences and your current MSc. studies, high education levels are significant in understanding health outcomes.
+
+Income (0.94): Their income is 0.94 standard deviations above the average, suggesting they earn more than the average participant.
+
+HighChol (-0.86): Their high cholesterol level is 0.86 standard deviations below the average, indicating they have a lower cholesterol level than the average participant.
+
+Sex (1.13): This standardized score for sex is a bit ambiguous without context. It could refer to biological differences or other gender-related factors. The value suggests this individual is 1.13 standard deviations away from the average, but without knowing how 'sex' is coded (e.g., male = 1, female = 2), it's hard to interpret.
+
+NoDocbcCost (-0.30): This feature might represent the individual's inability to see a doctor due to cost, being 0.30 standard deviations below the average. It suggests they are less likely to avoid seeing a doctor because of the cost compared to the average participant.
+
+
+Plot 4:
+Prediction Probabilities:
+The third image provides the probabilities that the model has assigned to the subject for the categories of "No Diabetes" and "Diabetes."
+The model seems quite confident in its prediction of "No Diabetes" with a probability of 0.98.
