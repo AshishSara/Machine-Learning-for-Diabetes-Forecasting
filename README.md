@@ -57,7 +57,8 @@ Performance of Optimized Logistic Regression:
   F1 Score: 0.7609
   Confusion Matrix:
 True Positives = 31920, True Negatives = 11853, False Positives = 9535, False Negatives = 34026
-==============================
+
+
 Performance of Optimized Gradient Boosting:
   Accuracy: 0.8866
   Precision: 0.8926
@@ -65,7 +66,6 @@ Performance of Optimized Gradient Boosting:
   F1 Score: 0.8854
   Confusion Matrix:
 True Positives = 39172,  True Negatives = 4601, False Positives = 5303, False Negatives = 38258
-==============================
 
 Evaluation Metrics:
 Accuracy: 0.9011
